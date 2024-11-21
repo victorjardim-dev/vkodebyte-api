@@ -39,7 +39,7 @@ const checkFields = (req, res, next) => {
   if ( isInvalidFields(product) ) {
     deleteImage(reqImg);
     return res.status(400).json({
-      api_message: "Por favor, preencha os campos!"
+      api_message_error: "Por favor, preencha os campos!"
     });
   }
 
@@ -49,7 +49,7 @@ const checkFields = (req, res, next) => {
   if (checkCaracterMsg.status) {
     deleteImage(reqImg);
     return res.status(400).json({
-      api_message: { errors: checkCaracterMsg.erros_msg }
+      api_message_error: { errors: checkCaracterMsg.erros_msg }
     });
   }
 
@@ -57,20 +57,20 @@ const checkFields = (req, res, next) => {
   if (isNaN(+product.price)) {
     deleteImage(reqImg);
     return res.status(400).json({
-      api_message: "Preço incorreto!"
+      api_message_error: "Preço incorreto!"
     });
   }
 
   if (isNegativeField(product)) {
     deleteImage(reqImg);
     return res.status(400).json({
-      api_message: "Preço ou estoque não podem ser negativos!"
+      api_message_error: "Preço ou estoque não podem ser negativos!"
     });
   }
   
   if (reqImg === "") {
     return res.status(400).json({
-      api_message: "Imagem do produto obrigatória."
+      api_message_error: "Imagem do produto obrigatória."
     });
   }
 

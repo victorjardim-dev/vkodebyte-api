@@ -19,7 +19,7 @@ const createNewProduct = async (req, res) => {
 
       return res.status(401).json({
         total_products: totalProdutos,
-        api_message: "Máximo de produtos cadastrados!",
+        api_message_error: "Máximo de produtos cadastrados!",
         allowed_max_products: MAX_API_PRODUCTS
       });
 
@@ -35,7 +35,7 @@ const createNewProduct = async (req, res) => {
 
   } catch (err) {
     res.status(500).json({
-      api_message: err
+      api_message_error: err
     });
   }
 }
@@ -61,7 +61,7 @@ const ctrl_updateProductByCode = async (req, res) => {
     const prod = await ProductsModelQueries.getProductByCode(id);
 
     if (row.affectedRows == 0) {
-      return res.status(404).json({ api_message: "Produto não encontrado!" });
+      return res.status(404).json({ api_message_error: "Produto não encontrado!" });
     }
 
     return res.status(200).json({
@@ -73,7 +73,7 @@ const ctrl_updateProductByCode = async (req, res) => {
     });
 
   } catch (err) {
-    return res.status(500).json({ api_message: err });
+    return res.status(500).json({ api_message_error: err });
   }
 };
 
@@ -103,13 +103,13 @@ const ctrl_showProductByCode = async (req, res) => {
     const row = await ProductsModelQueries.getProductByCode(id);
 
     if (row.length == 0) {
-      return res.status(404).json({ api_message: "Produto não encontrado!" });
+      return res.status(404).json({ api_message_error: "Produto não encontrado!" });
     }
 
     return res.status(200).json(row[0]);
 
   } catch (err) {
-    return res.status(500).json({ api_message: err });
+    return res.status(500).json({ api_message_error: err });
   }
 
 };
@@ -132,11 +132,11 @@ const ctrl_showProducts = async (req, res) => {
       ]
     });
   } catch (err) {
-    return res.status(500).json({ api_message: err });
+    return res.status(500).json({ api_message_error: err });
   }
 };
 
-const ctrl_truncateProducts = async (req, res) => {
+const ctrl_deleteAllProduts = async (req, res) => {
   try {
     const imagens = (await ProductsModelQueries.getProducts());
     await ProductsModelQueries.deleteAllProds();
@@ -147,7 +147,7 @@ const ctrl_truncateProducts = async (req, res) => {
 
     return res.status(200).json({ api_message: "Todos os registros e imagens foram deletados" });
   } catch (err) {
-    return res.status(500).json({ api_message: err });
+    return res.status(500).json({ api_message_error: err });
   }
 };
 
@@ -157,5 +157,5 @@ module.exports = {
   ctrl_deleteProduct,
   ctrl_showProductByCode,
   ctrl_showProducts,
-  ctrl_truncateProducts,
+  ctrl_deleteAllProduts,
 }
