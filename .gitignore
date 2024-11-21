@@ -4,3 +4,5 @@ api-logs/*
 !api-logs/.gitkeep
 uploads/*
 !uploads/.gitkeep
+server.crt
+server.key
