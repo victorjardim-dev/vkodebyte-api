@@ -13,7 +13,7 @@ const updateProduct = (updates, code_id) => {
 }
 
 // Atualiza um produto pelo seu código
-const deleteProduct = (code_id) => {
+const deleteProduct = async (code_id) => {
   const query = "DELETE FROM products WHERE product_code = ?";
   return db_exec(query, code_id, "Não foi possível deletar o produto.");
 }
@@ -34,6 +34,12 @@ const getProducts = () => {
 const getTotalProducts = () => {
   const query = "SELECT COUNT(*) as total FROM products;";
   return db_exec(query, "Não foi possível executar a consulta.")
+}
+
+// Zera a tabela Produtos
+const deleteAllProds = async () => {
+  const query = "DELETE FROM products;";
+  return db_exec(query, "Não foi possível executar a query.")
 }
 
 // Inicia a aplicação com alguns produtos já cadastrados
@@ -70,4 +76,5 @@ module.exports = {
   getProductByCode,
   getProducts,
   getTotalProducts,
+  deleteAllProds,
 }

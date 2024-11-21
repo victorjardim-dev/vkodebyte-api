@@ -67,6 +67,12 @@ const checkFields = (req, res, next) => {
       api_message: "Preço ou estoque não podem ser negativos!"
     });
   }
+  
+  if (reqImg === "") {
+    return res.status(400).json({
+      api_message: "Imagem do produto obrigatória."
+    });
+  }
 
   next();
 }

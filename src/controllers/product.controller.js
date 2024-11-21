@@ -24,7 +24,7 @@ const createNewProduct = async (req, res) => {
       });
 
     } else {
-      await ProductsModelQueries.createProduct(newProduct, req.file.path);
+      await ProductsModelQueries.createProduct(newProduct, newProduct.url_image);
 
       return res.status(201).json({
         api_message: "Produto cadastrado com sucesso!",
@@ -79,20 +79,20 @@ const ctrl_updateProductByCode = async (req, res) => {
 
 const ctrl_deleteProduct = async (req, res) => {
   const id = req.params.id;
-  const imgDelete = req.body.deleteImg ? "uploads/" + req.body.deleteImg : "";
+  const imgDelete = req.body.deleteImg;
 
   try {
     const row = await ProductsModelQueries.deleteProduct(id);
+
     if (row.affectedRows == 0) {
-      return res.status(404).json({ api_message: "Produto não encontrado." });
+      return res.status(404).json({ api_message_error: ["Produto não encontrado."] });
     }
 
     deleteImage(imgDelete);
     res.status(200).json({ api_message: "Produto deletado com sucesso." });
 
   } catch (err) {
-    console.log(err)
-    return res.status(500).json({ api_message: err });
+    return res.status(500).json({ api_message_error: err });
   }
 };
 
@@ -136,10 +136,26 @@ const ctrl_showProducts = async (req, res) => {
   }
 };
 
+const ctrl_truncateProducts = async (req, res) => {
+  try {
+    const imagens = (await ProductsModelQueries.getProducts());
+    await ProductsModelQueries.deleteAllProds();
+    
+    imagens.forEach(img => {
+      deleteImage(img.url_image);
+    });
+
+    return res.status(200).json({ api_message: "Todos os registros e imagens foram deletados" });
+  } catch (err) {
+    return res.status(500).json({ api_message: err });
+  }
+};
+
 module.exports = {
   createNewProduct,
   ctrl_updateProductByCode,
   ctrl_deleteProduct,
   ctrl_showProductByCode,
   ctrl_showProducts,
+  ctrl_truncateProducts,
 }
