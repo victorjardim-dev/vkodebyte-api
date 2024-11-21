@@ -1,18 +1,18 @@
-MAX_API_PRODUCTS = 50;
+MAX_API_PRODUCTS = 100;
 
-const https = require('https');
-const fs = require('fs');
-const path = require('path');
+const https = require("https");
+const fs = require("fs");
+const path = require("path");
 require("dotenv").config();
 const app = require("./src/app");
 
-const keyPath = path.join(__dirname, 'server.key');
-const certPath = path.join(__dirname, 'server.crt');
-
 const HOST = process.env.APP_HOST;
 const PORT = process.env.APP_PORT;
-const PORT_SSL = process.env.APP_PORT_SSL;
+const PORT_SSL = process.env.APP_PORT_SSL; // Porta SSL caso não esteja usando XAMPP
 
+// Lendo arquivos do certificado copiados do XAMPP
+const keyPath = path.join(__dirname, "server.key");
+const certPath = path.join(__dirname, "server.crt");
 const options = {
   key: fs.readFileSync(keyPath),
   cert: fs.readFileSync(certPath),

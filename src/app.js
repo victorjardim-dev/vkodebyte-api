@@ -1,11 +1,11 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const path = require('path');
+const path = require("path");
 
-const allowedDomains = ['https://victorjardim.dev', 'https://victorjardim.online'];
+const allowedDomains = ["https://victorjardim.dev", "https://victorjardim.online"];
 const corsOptions = (req, callback) => {
-  const origin = req.header('Origin'); // Obtém o domínio da requisição
+  const origin = req.header("Origin"); // Obtém o domínio da requisição
   if (allowedDomains.includes(origin)) {
     callback(null, { origin: true }); // Autoriza o domínio
   } else {
@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Configura upload de imagem
-app.use('/uploads', express.static(path.join(__dirname, "..", 'uploads')));
+app.use("/uploads", express.static(path.join(__dirname, "..", "uploads")));
 
 // Rotas de produtos
 const productsRoutes = require("./routes/product.routes");

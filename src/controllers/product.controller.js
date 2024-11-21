@@ -53,7 +53,7 @@ const ctrl_updateProductByCode = async (req, res) => {
   updateProduct.url_image = req.file ? req.file.filename : fotoAtual;
 
   if (updateProduct.url_image != fotoAtual) {
-    deleteImage( "uploads/" + fotoAtual );
+    deleteImage(fotoAtual);
   }
   
   try {
