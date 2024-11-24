@@ -32,6 +32,10 @@ app.use("/pedidos", ordersRoutes);
 const categoriesRoutes = require("./routes/category.routes");
 app.use("/categorias", categoriesRoutes);
 
+//Rotas para login categorias
+const adminRoutes = require("./routes/admin.routes");
+app.use("/admin", adminRoutes);
+
 // ROTA PARA ZERAR TABELA - APENAS EM DESENVOLVIMENTO
 const zerarRoute = require("./routes/zerar.routes");
 app.use("/zerar-tabela-produtos", zerarRoute);
