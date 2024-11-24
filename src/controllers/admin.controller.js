@@ -3,10 +3,16 @@ const jwt = require("jsonwebtoken");
 const SECRET_KEY = process.env.SECRET_KEY_JWT;
 const UsersModelQueries = require("../models/users.model");
 
+const getTokenExpiration = (time, time_type) => String(time + time_type);
+
 const authLogin = async (req, res) => {
   const {username, user_pass} = req.body;
-
+  
   try {
+    if (username === "" || user_pass === "") {
+      return res.status(400).json({api_message_error: "Campos não podem estar vazios."});
+    }
+
     const acessUser = (await UsersModelQueries.getUser(username));
 
     if (acessUser.length > 0) {
@@ -16,10 +22,9 @@ const authLogin = async (req, res) => {
         if (err) throw err;
   
         if (isMath) {
-          const token = jwt.sign( {id: usr.id, user: usr.username}, SECRET_KEY, { expiresIn: "5m" } );
+          const token = jwt.sign( {id: usr.id, name: usr.name, user: usr.username}, SECRET_KEY, { expiresIn: getTokenExpiration( 1, "m" ) } );
           return res.status(200).json({ api_message: "Login bem-sucedido!", token: token,  });
         } else {
-          console.log("Diferente");
           return res.status(401).json({ api_message_error: "Senha incorreta!" });
         }
       });
@@ -34,7 +39,7 @@ const authLogin = async (req, res) => {
 }
 
 const dashboadLogin = async (req, res) => {
-  return res.json({ api_message: `Bem-vindo, ${req.user.user}!` });
+  return res.json({ api_message: `Bem-vindo, ${req.user.name}!` });
 }
 
 const newUserLogin = async (req, res) => {

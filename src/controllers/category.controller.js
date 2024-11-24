@@ -14,8 +14,12 @@ const getAllCategories = async (req, res) => {
 // Cria uma nova categoria
 const newCategory = async (req, res) => {
   const newCategory = req.body;
-
   try {
+
+    if (newCategory.category_name == "") {
+      return res.status(400).json({ api_message_error: "Insira o nome da categoria." });
+    }
+
     await categoriesModelQueries.createCategory(newCategory);
 
     const totalCategories = (await categoriesModelQueries.getTotalCategories())[0].total;
