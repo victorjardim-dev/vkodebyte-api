@@ -34,7 +34,7 @@ const createNewProduct = async (req, res) => {
     }
 
   } catch (err) {
-    res.status(500).json({
+    return res.status(500).json({
       api_message_error: err
     });
   }

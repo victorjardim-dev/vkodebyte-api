@@ -11,6 +11,48 @@ const getAllCategories = async (req, res) => {
   return res.status(200).json(rows);
 }
 
+// Cria uma nova categoria
+const newCategory = async (req, res) => {
+  const newCategory = req.body;
+
+  try {
+    await categoriesModelQueries.createCategory(newCategory);
+
+    const totalCategories = (await categoriesModelQueries.getTotalCategories())[0].total;
+  
+    return res.status(201).json({
+      api_message: "Categoria cadastrada com sucesso!",
+      total_categories: totalCategories,
+      new: newCategory
+    });
+
+  } catch (err) {
+    return res.status(500).json({
+      api_message_error: err
+    });
+  }
+
+}
+
+const deleteCategory = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const row = await categoriesModelQueries.deleteCategory(id);
+
+    if (row.affectedRows == 0) {
+      return res.status(404).json({ api_message_error: ["Categoria não encontrada."] });
+    }
+    
+    res.status(200).json({ api_message: "Categoria deletada com sucesso." });
+
+  } catch (err) {
+    return res.status(500).json({ api_message_error: err });
+  }
+}
+
 module.exports = {
   getAllCategories,
+  newCategory,
+  deleteCategory,
 }

@@ -68,7 +68,7 @@ const checkFields = (req, res, next) => {
     });
   }
   
-  if (reqImg === "") {
+  if (reqImg === "" && req.method !== "PUT") {
     return res.status(400).json({
       api_message_error: "Imagem do produto obrigatória."
     });
