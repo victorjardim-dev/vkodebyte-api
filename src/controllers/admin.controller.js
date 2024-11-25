@@ -5,6 +5,18 @@ const UsersModelQueries = require("../models/users.model");
 
 const getTokenExpiration = (time, time_type) => String(time + time_type);
 
+const listUsers = async (req, res) => {
+  const rows = await UsersModelQueries.listAllUsers();
+  
+  return res.status(200).json({
+    // total_products: totalProdutos,
+    // allowed_max_products: MAX_API_PRODUCTS,
+    users: [
+      ...rows
+    ]
+  });
+}
+
 const authLogin = async (req, res) => {
   const {username, user_pass} = req.body;
   
@@ -44,11 +56,11 @@ const dashboadLogin = async (req, res) => {
 
 const newUserLogin = async (req, res) => {
   const newUser = req.body;
-  newUser.created_by = req.user.name;
+  newUser.created_by = req.user.name;  
   
-  if (!newUser.username || !newUser.user_pass || !newUser.email) return res.status(400).json( { api_message_error: "Campos não pode estar vazios" } );
-
   try {
+    if (!newUser.name || !newUser.username || !newUser.user_pass || !newUser.email) return res.status(400).json( { api_message_error: "Campos não pode estar vazios" } );
+
     const hashedPass = await bcripty.hash(newUser.user_pass, 10);
     newUser.user_pass = hashedPass;
   
@@ -58,12 +70,12 @@ const newUserLogin = async (req, res) => {
       api_message: "Usuário criado com sucess!",
     });
   } catch (err) {
-    console.log(err);
-    return res.status(500).json({ api_message_error: "Erro no servidor" });
+    return res.status(500).json({ api_message_error: err });
   }
 }
 
 module.exports = {
+  listUsers,
   authLogin,
   dashboadLogin,
   newUserLogin,

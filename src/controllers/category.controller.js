@@ -17,7 +17,6 @@ const newCategory = async (req, res) => {
   newCategory.created_by = req.user.name;
 
   try {
-
     if (newCategory.category_name == "") {
       return res.status(400).json({ api_message_error: "Insira o nome da categoria." });
     }
