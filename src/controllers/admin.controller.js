@@ -22,7 +22,7 @@ const authLogin = async (req, res) => {
         if (err) throw err;
   
         if (isMath) {
-          const token = jwt.sign( {id: usr.id, name: usr.name, user: usr.username}, SECRET_KEY, { expiresIn: getTokenExpiration( 1, "m" ) } );
+          const token = jwt.sign( {id: usr.id, name: usr.name, user: usr.username}, SECRET_KEY, { expiresIn: getTokenExpiration( 1, "h" ) } );
           return res.status(200).json({ api_message: "Login bem-sucedido!", token: token,  });
         } else {
           return res.status(401).json({ api_message_error: "Senha incorreta!" });
@@ -44,6 +44,7 @@ const dashboadLogin = async (req, res) => {
 
 const newUserLogin = async (req, res) => {
   const newUser = req.body;
+  newUser.created_by = req.user.name;
   
   if (!newUser.username || !newUser.user_pass || !newUser.email) return res.status(400).json( { api_message_error: "Campos não pode estar vazios" } );
 

@@ -3,6 +3,7 @@ const ProductsModelQueries = require("../models/product.model");
 
 const createNewProduct = async (req, res) => {
   const newProduct = req.body;
+  newProduct.created_by = req.user.name;
 
   // Parse dos tipos
   newProduct.price = parseFloat(newProduct.price);

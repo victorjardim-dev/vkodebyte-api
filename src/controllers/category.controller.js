@@ -14,6 +14,8 @@ const getAllCategories = async (req, res) => {
 // Cria uma nova categoria
 const newCategory = async (req, res) => {
   const newCategory = req.body;
+  newCategory.created_by = req.user.name;
+
   try {
 
     if (newCategory.category_name == "") {
