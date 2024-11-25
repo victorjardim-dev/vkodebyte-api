@@ -20,26 +20,31 @@ app.use(express.urlencoded({ extended: true }));
 // Configura upload de imagem
 app.use("/uploads", express.static(path.join(__dirname, "..", "uploads")));
 
+// Key de Autorização
+const authApi = require("./middlewares/authApi.mid");
+app.use(authApi);
+
 //Rotas para login categorias
 const authToken = require("./middlewares/authtoken.mid");
+app.use(authToken);
 
 const adminRoutes = require("./routes/admin.routes");
 app.use("/admin", adminRoutes);
 
 // Rotas de produtos
 const productsRoutes = require("./routes/product.routes");
-app.use("/produtos", authToken, productsRoutes);
+app.use("/produtos", productsRoutes);
 
 //Rotas de pedidos
 const ordersRoutes = require("./routes/order.routes");
-app.use("/pedidos", authToken, ordersRoutes);
+app.use("/pedidos", ordersRoutes);
 
 //Rotas de categorias
 const categoriesRoutes = require("./routes/category.routes");
-app.use("/categorias", authToken, categoriesRoutes);
+app.use("/categorias", categoriesRoutes);
 
 // ROTA PARA ZERAR TABELA - APENAS EM DESENVOLVIMENTO
 const zerarRoute = require("./routes/zerar.routes");
-app.use("/zerar-tabela-produtos", authToken, zerarRoute);
+app.use("/zerar-tabela-produtos", zerarRoute);
 
 module.exports = app;

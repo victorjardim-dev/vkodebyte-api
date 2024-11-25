@@ -15,9 +15,7 @@ const db_exec = (sql, values = "", rejectMessage, imagem = "") => {
   return new Promise((resolve, reject) => {
     conn.query(sql, values, (err, result) => {
       if (err) {
-        if (imagem) {
-          deleteImage(imagem);
-        }
+        deleteImage(imagem);
         return reject([ rejectMessage, err.sqlMessage ]);
       }
       const rows = JSON.parse(JSON.stringify(result));

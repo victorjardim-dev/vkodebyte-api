@@ -16,8 +16,7 @@ const createNewProduct = async (req, res) => {
     const totalProdutos = (await ProductsModelQueries.getTotalProducts())[0].total;
 
     if (totalProdutos >= MAX_API_PRODUCTS) {
-      deleteImage(`uploads/${newProduct.url_image}`);
-
+      deleteImage(newProduct.url_image);
       return res.status(401).json({
         total_products: totalProdutos,
         api_message_error: "Máximo de produtos cadastrados!",
