@@ -22,7 +22,7 @@ const createNewProduct = async (req, res) => {
         api_message_error: "Máximo de produtos cadastrados!",
         allowed_max_products: MAX_API_PRODUCTS
       });
-
+      
     } else {
       await ProductsModelQueries.createProduct(newProduct, newProduct.url_image);
 

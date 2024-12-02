@@ -7,6 +7,12 @@ const createUser = (user) => {
 }
 
 // Busca por um usuario específico
+const deleteUser = (id) => {
+  const query = "DELETE FROM users WHERE id = ?;";
+  return db_exec(query, id, "Não foi possível deletar o usuário.");
+}
+
+// Busca por um usuario específico
 const getUser = (username) => {
   const query = "SELECT * FROM users where username = ?;";
   return db_exec(query, username, "Não foi possível encontrar o usuário.");
@@ -19,6 +25,7 @@ const listAllUsers = () => {
 
 module.exports = {
   createUser,
+  deleteUser,
   listAllUsers,
   getUser,
 }

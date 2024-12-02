@@ -7,5 +7,6 @@ routes.post("/novo-usuario", authToken, adminController.newUserLogin);
 routes.post("/login", adminController.authLogin);
 routes.get("/painel", authToken, adminController.dashboadLogin);
 routes.get("/usuarios", authToken, adminController.listUsers);
+routes.delete("/usuarios/:id", authToken, adminController.deleteUser);
 
 module.exports = routes;

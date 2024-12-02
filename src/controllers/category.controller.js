@@ -17,7 +17,7 @@ const newCategory = async (req, res) => {
   newCategory.created_by = req.user.name;
 
   try {
-    if (newCategory.category_name == "") {
+    if (!newCategory.category_name) {
       return res.status(400).json({ api_message_error: "Insira o nome da categoria." });
     }
 
@@ -46,7 +46,7 @@ const deleteCategory = async (req, res) => {
     const row = await categoriesModelQueries.deleteCategory(id);
 
     if (row.affectedRows == 0) {
-      return res.status(404).json({ api_message_error: ["Categoria não encontrada."] });
+      return res.status(404).json({ api_message_error: "Categoria não encontrada." });
     }
     
     res.status(200).json({ api_message: "Categoria deletada com sucesso." });

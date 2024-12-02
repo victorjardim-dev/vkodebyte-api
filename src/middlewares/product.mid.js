@@ -3,7 +3,8 @@ const { deleteImage } = require("../../deleteimage");
 const min_caracteres_length = 5;
 const max_caracteres_length = 500;
 
-const isInvalidFields = (fields) => (!fields.name || !fields.price || !fields.category_id);
+const getMaxImageSize = (megabyte = 1) => megabyte * (1024 * 1024);
+const isInvalidFields = (fields) => (!fields.name || !fields.price || !fields.category_id || !fields.stock);
 const isNegativeField = (fields) => (fields.price < 0 || fields.stock < 0);
 
 const checkCaracters = (fields) => {
@@ -72,6 +73,13 @@ const checkFields = (req, res, next) => {
     return res.status(400).json({
       api_message_error: "Imagem do produto obrigatória."
     });
+  }
+
+  const imageSize = req.file ? req.file.size : 0;
+  const maxImageSize = getMaxImageSize(1); // 5MB
+  if (imageSize >= maxImageSize) {
+    deleteImage(reqImg);
+    return res.status(401).json({ api_message_error: `O tamanho da imagem não pode ser maior que ${maxImageSize / (1024 * 1024)}MB (${maxImageSize / (1024 * 1024)} megabyte)` });
   }
 
   next();

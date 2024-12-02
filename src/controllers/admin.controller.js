@@ -21,8 +21,8 @@ const authLogin = async (req, res) => {
   const {username, user_pass} = req.body;
   
   try {
-    if (username === "" || user_pass === "") {
-      return res.status(400).json({api_message_error: "Campos não podem estar vazios."});
+    if (!username || !user_pass) {
+      return res.status(400).json({api_message_error: "Campos são obrigatórios."});
     }
 
     const acessUser = (await UsersModelQueries.getUser(username));
@@ -54,9 +54,27 @@ const dashboadLogin = async (req, res) => {
   return res.json({ api_message: `Bem-vindo, ${req.user.name}!` });
 }
 
+const deleteUser = async (req, res) => {
+  const id = parseInt(req.params.id);
+  
+  try {  
+    const row = await UsersModelQueries.deleteUser(id);
+    
+    if (row.affectedRows == 0) {
+      return res.status(404).json({ api_message_error: "Usuário não encontrado." });
+    }
+    
+    res.status(201).json({
+      api_message: "Usuário deletado com sucesso!",
+    });
+  } catch (err) {
+    return res.status(500).json({ api_message_error: err });
+  }
+}
+
 const newUserLogin = async (req, res) => {
   const newUser = req.body;
-  newUser.created_by = req.user.name;  
+  newUser.created_by = req.user.name;
   
   try {
     if (!newUser.name || !newUser.username || !newUser.user_pass || !newUser.email) return res.status(400).json( { api_message_error: "Campos não pode estar vazios" } );
@@ -67,7 +85,7 @@ const newUserLogin = async (req, res) => {
     await UsersModelQueries.createUser(newUser);
   
     res.status(201).json({
-      api_message: "Usuário criado com sucess!",
+      api_message: "Usuário criado com sucesso!",
     });
   } catch (err) {
     return res.status(500).json({ api_message_error: err });
@@ -79,4 +97,5 @@ module.exports = {
   authLogin,
   dashboadLogin,
   newUserLogin,
+  deleteUser,
 };
