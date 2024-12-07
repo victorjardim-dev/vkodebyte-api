@@ -43,7 +43,7 @@ const categoriesRoutes = require("./routes/category.routes");
 app.use("/categorias", authToken, categoriesRoutes);
 
 // ROTA PARA ZERAR TABELA - APENAS EM DESENVOLVIMENTO
-const zerarRoute = require("./routes/zerar.routes");
-app.use("/zerar-tabela-produtos", authToken, zerarRoute);
+// const zerarRoute = require("./routes/zerar.routes");
+// app.use("/zerar-tabela-produtos", authToken, zerarRoute);
 
 module.exports = app;
